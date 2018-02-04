@@ -14,7 +14,7 @@
                 {% block headline %}
                 {% endblock %}
             </div>
-            {% if request.session.logged_id %}
+            {% if request.session.auth_id %}
                 <div class="col col-sm-4">
                     {% block nav %}
                     {% endblock %}

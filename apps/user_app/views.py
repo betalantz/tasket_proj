@@ -31,7 +31,7 @@ def process_reg(req):
             email_matches = User.objects.filter(email=form.cleaned_data['email'])
             print email_matches
             if not len(email_matches) == 0:
-                messages.error(req, 'We already have an entry with that email, name of {}'.format(email_matches[0].name))
+                messages.error(req, 'We already have an entry with that email, with name of {}'.format(email_matches[0].name))
                 return redirect('/')
             # Create and save new user
             new_user = User()
@@ -97,3 +97,17 @@ def process_log(req):
         }
 
     return render(req, 'user_app/login.html', context)
+
+def sessionCheck(req):
+    try:
+        return req.session['auth_id']
+    except:
+        return False
+
+def logout(req):
+    req.session.flush()
+    storage = messages.get_messages(req)
+    for message in storage:
+        print(message)
+    storage.used = True
+    return redirect('/')

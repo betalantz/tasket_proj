@@ -1,10 +1,18 @@
-dash.html test{% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block headline %}
 <div class="jumbotron">
     <h1 class="display-4">Tasket Dashboard</h1>
-    <p class="lead">{{ req.session.auth_name }}'s tasks</p>
+    <p class="lead">{{ request.session.auth_name }}'s tasks and appointments.</p>
 </div>
+{% endblock %}
+
+{% block nav %}
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" href="/user/logout">Logout</a>
+        </li>
+    </ul>
 {% endblock %}
