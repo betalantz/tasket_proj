@@ -82,6 +82,7 @@ def process_log(req):
             if pw_auth:
                 req.session['auth_id'] = curr_user.id
                 req.session['auth_name'] = curr_user.name
+                print "{} {} saved to session".format(req.session['auth_id'], req.session['auth_name'])
                 messages.info(req, 'Login successful.')
                 return redirect('/task/')
             else:
@@ -99,13 +100,16 @@ def process_log(req):
     return render(req, 'user_app/login.html', context)
 
 def sessionCheck(req):
+    print "@ sessionCheck"
     try:
         return req.session['auth_id']
     except:
         return False
 
 def logout(req):
+    print "@ logout"
     req.session.flush()
+    print "session flushed"
     storage = messages.get_messages(req)
     for message in storage:
         print(message)
