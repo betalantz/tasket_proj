@@ -1,0 +1,10 @@
+dash.html test{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block headline %}
+<div class="jumbotron">
+    <h1 class="display-4">Tasket Dashboard</h1>
+    <p class="lead">{{ req.session.auth_name }}'s tasks</p>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration & Login{% endblock %}
+
+{% block headline %}
+<div class="jumbotron">
+    <h1 class="display-4">Tasket</h1>
+    <p class="lead">A place to track your future plans and appointments.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h2>Registration</h2>
+        <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group was-validated">
+                {{ field }}
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text | safe }}</small>
+                {% endif %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger" role="alert">{{ error | escape }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% elif message.tags == 'success' %}
+                    <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    <div class="col">
+        <h2>Login</h2>
+        <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        {% for field in log_form %}
+            <div class="form-group was-validated">
+                {{ field }}
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text | safe }}</small>
+                {% endif %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger" role="alert">{{ error | escape }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <br>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'warning' %}
+                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% elif message.tags == 'info' %}
+                    <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
