@@ -16,3 +16,84 @@
         </li>
     </ul>
 {% endblock %}
+
+{% block content %}
+<h2>Here are your tasks for today, {{ today }}:</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Time</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in curr_tasks %}
+        <tr>
+            <th scope="row">{{ task.task }}</th>
+            <td>{{ task.time }}</td>
+            <td>{{ task.get_status_display }}</td>
+            <td><a class="btn btn-small btn-primary" href="/task/edit/{{task.id}}/">Edit</a>
+                <a class="btn btn-small btn-danger" href="/task/delete/{{task.id}}/">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Your future:</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in future_tasks %}
+        <tr>
+            <th scope="row">{{ task.task }}</th>
+            <td>{{ task.date }}</td>
+            <td>{{ task.time }}</td>
+            <td>{{ task.get_status_display }}</td>
+            <td><a class="btn btn-small btn-primary" href="/task/edit/{{task.id}}/">Edit</a>
+                <a class="btn btn-small btn-danger" href="/task/delete/{{task.id}}/">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr>
+<h3>Add a task</h3>
+<form action="{% url 'add' %}" method="post">
+    {% csrf_token %}
+    {% for field in addForm %}
+        <div class="form-group was-validated">
+            {{ field }}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text | safe }}</small>
+            {% endif %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger" role="alert">{{ error | escape }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Add task</button>
+</form>
+<script type="text/javascript">
+    $(function() {
+        $('#datetimepicker4').datetimepicker({
+            format: 'YYYY-MM-DD',
+            minDate: datetime.date.today()
+        })
+    })
+    // $(function() {
+    //     $('#datetimepicker3').datetimepicker({
+    //         format: 'LT'
+    //     })
+    // })
+</script>
+{% endblock %}

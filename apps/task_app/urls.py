@@ -5,4 +5,7 @@ from . import views
 urlpatterns = [
     
     url(r'^$', views.display_dash),
+    url(r'^edit/(?P<task_id>\d+)/$', views.editTask),
+    url(r'^delete/(?P<task_id>\d+)/$', views.deleteTask),
+    url(r'^add/$', views.addTask, name='add'),
 ]
