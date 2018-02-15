@@ -3,8 +3,10 @@ from django import forms
 class NewTask(forms.Form):
     DATEPICKER = {
         'type': 'text',
-        'class': 'form-control',
+        'class': 'form-control datetimepicker-input',
         'id': 'datetimepicker4',
+        'data-toggle': 'datetimepicker',
+        'data-target': '#datetimepicker4',
         'placeholder': 'Enter date for task'
     }
     TIMEPICKER = {

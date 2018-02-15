@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block title %}Dashboard{% endblock %}
-
 {% block headline %}
 <div class="jumbotron">
     <h1 class="display-4">Tasket Dashboard</h1>
@@ -34,8 +33,8 @@
             <th scope="row">{{ task.task }}</th>
             <td>{{ task.time }}</td>
             <td>{{ task.get_status_display }}</td>
-            <td><a class="btn btn-small btn-primary" href="/task/edit/{{task.id}}/">Edit</a>
-                <a class="btn btn-small btn-danger" href="/task/delete/{{task.id}}/">Delete</a></td>
+            <td><a class="btn btn-small btn-outline-primary" href="/task/edit/{{task.id}}/">Edit</a>
+                <a class="btn btn-small btn-outline-danger" href="/task/delete/{{task.id}}/">Delete</a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -58,42 +57,59 @@
             <td>{{ task.date }}</td>
             <td>{{ task.time }}</td>
             <td>{{ task.get_status_display }}</td>
-            <td><a class="btn btn-small btn-primary" href="/task/edit/{{task.id}}/">Edit</a>
-                <a class="btn btn-small btn-danger" href="/task/delete/{{task.id}}/">Delete</a></td>
+            <td><a class="btn btn-small btn-outline-primary" href="/task/edit/{{task.id}}/">Edit</a>
+                <a class="btn btn-small btn-outline-danger" href="/task/delete/{{task.id}}/">Delete</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 <hr>
-<h3>Add a task</h3>
-<form action="{% url 'add' %}" method="post">
-    {% csrf_token %}
-    {% for field in addForm %}
-        <div class="form-group was-validated">
-            {{ field }}
-            {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text | safe }}</small>
-            {% endif %}
-            {% if field.errors %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger" role="alert">{{ error | escape }}</div>
-                {% endfor %}
-            {% endif %}
-        </div>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary">Add task</button>
-</form>
-<script type="text/javascript">
-    $(function() {
-        $('#datetimepicker4').datetimepicker({
-            format: 'YYYY-MM-DD',
-            minDate: datetime.date.today()
-        })
-    })
-    // $(function() {
-    //     $('#datetimepicker3').datetimepicker({
-    //         format: 'LT'
-    //     })
-    // })
-</script>
+<div class="col-sm-8">
+    <h3>Add a task</h3>
+        <form action="{% url 'add' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="task" class="form-control" placeholder="Enter task description" maxlength="100" required />
+            </div>
+            <div class="form-group">
+                <input type="text" name="date" class="form-control datetimepicker-input" id="datetimepicker5" data-toggle="datetimepicker" data-target="#datetimepicker5" placeholder="Enter task date"/>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker5').datetimepicker({
+                                format: 'YYYY-MM-DD',
+                                minDate: 'now'
+                            });
+                        });
+                    </script>
+            </div>
+            <div class="form-group">
+                <input type="text" name="time" class="form-control datetimepicker-input" id="datetimepicker4" data-toggle="datetimepicker" data-target="#datetimepicker4" placeholder="Enter task time"/>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker4').datetimepicker({
+                                format: 'LT'
+                            });
+                        });
+                    </script>
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="status">
+                    <option value="P">Pending</option>
+                    <option value="D">Done</option>
+                    <option value="M">Missed</option>
+                </select>
+                    <small class="form-text text-muted">Select task status</small>
+            </div>   
+            <button type="submit" class="btn btn-primary">Add task</button>
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% elif message.tags == 'success' %}
+                    <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+</div>
 {% endblock %}

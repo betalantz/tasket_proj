@@ -18,10 +18,15 @@ def display_dash(req):
 
     context = {
         'today': datetime.date.today(),
-        'curr_tasks': Task.objects.filter(user=req.session['auth_id']).filter(date=datetime.date.today()),
-        'future_tasks': Task.objects.filter(user=req.session['auth_id']).filter(date__gt=datetime.date.today()),
+        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=datetime.date.today()),
+        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today()),
         'addForm': NewTask()
     }
+    logged = req.session['auth_id']
+    later = Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today())
+    print "filter returns:"
+    print later
+    print logged
     return render(req, 'task_app/dash.html', context)
 
 def editTask(req):
@@ -31,4 +36,10 @@ def deleteTask(req):
     pass
     
 def addTask(req):
-    pass
+    results = Task.objects.taskValidator(req, req.POST)
+    if results['status']==False:
+        for error in results['errors']:
+            messages.error(req, error)
+        return redirect('/task')
+    # messages.success(req, 'Your task has been added.')
+    return redirect('/task')
