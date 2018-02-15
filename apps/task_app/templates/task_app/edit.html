@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Task{% endblock %}
+
+{% block nav %}
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+<h2>Edit your task</h2>
+
+<div class="col-sm-8">
+        <form action="/task/update/{{task.id}}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="task" class="form-control" placeholder="{{task.task}}" maxlength="100" required />
+            </div>
+            <div class="form-group">
+                <input type="text" name="date" class="form-control datetimepicker-input" id="datetimepicker5" data-toggle="datetimepicker" data-target="#datetimepicker5" placeholder="{{task.date}}"/>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker5').datetimepicker({
+                                format: 'YYYY-MM-DD',
+                                minDate: 'now'
+                            });
+                        });
+                    </script>
+            </div>
+            <div class="form-group">
+                <input type="text" name="time" class="form-control datetimepicker-input" id="datetimepicker4" data-toggle="datetimepicker" data-target="#datetimepicker4" placeholder="{{task.time}}"/>
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker4').datetimepicker({
+                                format: 'LT'
+                            });
+                        });
+                    </script>
+            </div>
+            <div class="form-group">
+                <select class="form-control" name="status">
+                    <option value="P"{% if task.status=="P"}selected{%endif%}>Pending</option>
+                    <option value="D"{% if task.status=="D"}selected{%endif%}>Done</option>
+                    <option value="M"{% if task.status=="M"}selected{%endif%}>Missed</option>
+                </select>
+                    <small class="form-text text-muted">Select task status</small>
+            </div>   
+            <button type="submit" class="btn btn-primary">Update task</button>
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% elif message.tags == 'success' %}
+                    <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+</div>
+{% endblock %}

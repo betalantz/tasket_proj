@@ -33,7 +33,7 @@
             <th scope="row">{{ task.task }}</th>
             <td>{{ task.time }}</td>
             <td>{{ task.get_status_display }}</td>
-            <td><a class="btn btn-small btn-outline-primary" href="/task/edit/{{task.id}}/">Edit</a>
+            <td><a class="btn btn-small btn-outline-primary" href="{% url 'edit' task_id=task.id %}">Edit</a>
                 <a class="btn btn-small btn-outline-danger" href="/task/delete/{{task.id}}/">Delete</a></td>
         </tr>
         {% endfor %}

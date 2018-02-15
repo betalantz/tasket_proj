@@ -29,12 +29,19 @@ def display_dash(req):
     print logged
     return render(req, 'task_app/dash.html', context)
 
-def editTask(req):
+def editTask(req, task_id):
+    if sessionCheck(req) == False:
+        messages.warning(req, 'Please login to access tasks.')
+        return redirect('/')
+
+    context = {
+        'task': Task.objects.get(id=task_id),
+    }
+    return redirect(req, 'task_app/edit.html', context)
+
+def updateTask(req, task_id):
     pass
 
-def deleteTask(req):
-    pass
-    
 def addTask(req):
     results = Task.objects.taskValidator(req, req.POST)
     if results['status']==False:
@@ -42,4 +49,9 @@ def addTask(req):
             messages.error(req, error)
         return redirect('/task')
     # messages.success(req, 'Your task has been added.')
+    return redirect('/task')
+
+def deleteTask(req, task_id):
+    thisTask = Task.objects.get(id=task_id)
+    thisTask.delete()
     return redirect('/task')
