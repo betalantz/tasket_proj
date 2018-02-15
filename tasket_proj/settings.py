@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.task_app.middleware.TimezoneMiddleware'
 ]
 
 ROOT_URLCONF = 'tasket_proj.urls'

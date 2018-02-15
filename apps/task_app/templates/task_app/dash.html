@@ -17,7 +17,9 @@
 {% endblock %}
 
 {% block content %}
+{% load tz %}
 <h2>Here are your tasks for today, {{ today }}:</h2>
+{% get_current_timezone as TIME_ZONE %}{{TIME_ZONE}}
 <table class="table table-hover">
     <thead>
         <tr>

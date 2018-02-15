@@ -25,4 +25,4 @@ class User(models.Model):
     updated_at = models.DateField(auto_now=True)
     objects = UserManager()
     def __str__(self):
-        return "<User object: {} {}>".format(self.id, self.name)
+        return "<User object: {} {}>".format(self.name, self.email)

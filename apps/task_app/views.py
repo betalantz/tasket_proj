@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
+from django.utils.timezone import localtime, now
 from ..user_app.views import sessionCheck
-import datetime
+# import datetime
+# import pytz
 from models import Task
 from forms import NewTask
 
@@ -17,7 +19,8 @@ def display_dash(req):
         return redirect('/')
 
     context = {
-        'today': datetime.date.today(),
+        # 'today': datetime.date.today(),
+        'today': localtime(now()),
         'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=datetime.date.today()).order_by('time'),
         'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today()).order_by('date', 'time'),
         'addForm': NewTask()
