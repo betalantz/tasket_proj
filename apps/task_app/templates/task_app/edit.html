@@ -14,7 +14,7 @@
 <h2>Edit your task</h2>
 
 <div class="col-sm-8">
-        <form action="/task/update/{{task.id}}" method="post">
+        <form action="{% url 'update' task_id=task.id %}" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <input type="text" name="task" class="form-control" placeholder="{{task.task}}" maxlength="100" required />
@@ -42,9 +42,9 @@
             </div>
             <div class="form-group">
                 <select class="form-control" name="status">
-                    <option value="P"{% if task.status=="P"}selected{%endif%}>Pending</option>
-                    <option value="D"{% if task.status=="D"}selected{%endif%}>Done</option>
-                    <option value="M"{% if task.status=="M"}selected{%endif%}>Missed</option>
+                    <option value="P" {% if task.status == 'P' %} selected {% endif %}>Pending</option>
+                    <option value="D" {% if task.status == 'D' %} selected {% endif %}>Done</option>
+                    <option value="M" {% if task.status == 'M' %} selected {% endif %}>Missed</option>
                 </select>
                     <small class="form-text text-muted">Select task status</small>
             </div>   

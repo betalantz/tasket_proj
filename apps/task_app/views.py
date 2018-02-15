@@ -35,23 +35,33 @@ def editTask(req, task_id):
         return redirect('/')
 
     context = {
-        'task': Task.objects.get(id=task_id),
+        'task': Task.objects.get(id=task_id)
     }
-    return redirect(req, 'task_app/edit.html', context)
+    return render(req, 'task_app/edit.html', context)
 
 def updateTask(req, task_id):
-    pass
+    update = Task.objects.get(id = task_id)
+    if req.POST['task']:
+        update.task = req.POST['task']
+    if req.POST['status']:
+        update.status = req.POST['status']
+    if req.POST['date']:
+        update.date = req.POST['date']
+    if req.POST['time']:
+        update.time = req.POST['time']
+    update.save()
+    return redirect('/task/')
 
 def addTask(req):
     results = Task.objects.taskValidator(req, req.POST)
     if results['status']==False:
         for error in results['errors']:
             messages.error(req, error)
-        return redirect('/task')
+        return redirect('/task/')
     # messages.success(req, 'Your task has been added.')
-    return redirect('/task')
+    return redirect('/task/')
 
 def deleteTask(req, task_id):
     thisTask = Task.objects.get(id=task_id)
     thisTask.delete()
-    return redirect('/task')
+    return redirect('/task/')
