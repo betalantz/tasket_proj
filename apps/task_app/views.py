@@ -18,8 +18,8 @@ def display_dash(req):
 
     context = {
         'today': datetime.date.today(),
-        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=datetime.date.today()),
-        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today()),
+        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=datetime.date.today()).order_by('time'),
+        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today()).order_by('date', 'time'),
         'addForm': NewTask()
     }
     logged = req.session['auth_id']
