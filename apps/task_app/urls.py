@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^update/(?P<task_id>\d+)/$', views.updateTask, name='update'),
     url(r'^delete/(?P<task_id>\d+)/$', views.deleteTask, name='delete'),
     url(r'^add/$', views.addTask, name='add'),
+    url(r'^search/$', views.search_tasks, name='search'),
 ]

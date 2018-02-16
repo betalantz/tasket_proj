@@ -21,15 +21,15 @@ def display_dash(req):
     context = {
         # 'today': datetime.date.today(),
         'today': localtime(now()),
-        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=datetime.date.today()).order_by('time'),
-        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today()).order_by('date', 'time'),
+        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=localtime(now())).order_by('time'),
+        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=localtime(now())).order_by('date', 'time'),
         'addForm': NewTask()
     }
-    logged = req.session['auth_id']
-    later = Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today())
-    print "filter returns:"
-    print later
-    print logged
+    # logged = req.session['auth_id']
+    # later = Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today())
+    # print "filter returns:"
+    # print later
+    # print logged
     return render(req, 'task_app/dash.html', context)
 
 def editTask(req, task_id):
@@ -68,3 +68,9 @@ def deleteTask(req, task_id):
     thisTask = Task.objects.get(id=task_id)
     thisTask.delete()
     return redirect('/task/')
+
+def search_tasks(req):
+    if req.method == 'POST':
+        search_text = req.POST['search_text']
+    else: 
+        search_text = ''
