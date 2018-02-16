@@ -20,7 +20,7 @@ def display_dash(req):
 
     context = {
         # 'today': datetime.date.today(),
-        'today': localtime(now()),
+        'today': localtime(now()).date,
         'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=localtime(now())).order_by('time'),
         'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=localtime(now())).order_by('date', 'time'),
         'addForm': NewTask()

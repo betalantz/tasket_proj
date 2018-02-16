@@ -3,6 +3,7 @@ from django.utils.deprecation import MiddlewareMixin
 
 import pytz
 from ..user_app.models import User
+from ..user_app.views import sessionCheck
 
 
 class TimezoneMiddleware(MiddlewareMixin):
@@ -19,9 +20,9 @@ class TimezoneMiddleware(MiddlewareMixin):
     #     return self.get_response(request)
 
     def process_request(self, request):
-        currTZ = User.objects.get(id=request.session['auth_id']).timezone
-        print currTZ
-        if currTZ:
+        if sessionCheck(request):
+            currTZ = User.objects.get(id=request.session['auth_id']).timezone
+            print currTZ
             timezone.activate(pytz.timezone(currTZ))
         else:
             timezone.deactivate()
