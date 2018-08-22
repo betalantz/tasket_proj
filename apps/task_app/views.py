@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
-from django.utils.timezone import localtime, now
+# from django.utils.timezone import localtime, now
+from django.utils import timezone
 from ..user_app.views import sessionCheck
 # import datetime
 # import pytz
@@ -17,12 +18,14 @@ def display_dash(req):
     if sessionCheck(req) == False:
         messages.warning(req, 'Please login to access tasks.')
         return redirect('/')
-
+    today = timezone.now()
     context = {
         # 'today': datetime.date.today(),
-        'today': localtime(now()).date,
-        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=localtime(now())).order_by('time'),
-        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=localtime(now())).order_by('date', 'time'),
+        'today': timezone.localtime(today).date,
+        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=timezone.now()).order_by('date'),
+        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=timezone.now()).order_by('date'),
+        # 'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=localtime(now())).order_by('time'),
+        # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=localtime(now())).order_by('date', 'time'),
         'addForm': NewTask()
     }
     # logged = req.session['auth_id']

@@ -33,7 +33,7 @@
         {% for task in curr_tasks %}
         <tr>
             <th scope="row">{{ task.task }}</th>
-            <td>{{ task.time }}</td>
+            <td>{{ task.date }}</td>
             <td>{{ task.get_status_display }}</td>
             <td><a class="btn btn-small btn-outline-primary" href="{% url 'edit' task_id=task.id %}">Edit</a>
                 <a class="btn btn-small btn-outline-danger" href="{% url 'delete' task_id=task.id %}">Delete</a></td>
@@ -73,8 +73,8 @@
             <div class="form-group">
                 <input type="text" name="task" class="form-control" placeholder="Enter task description" maxlength="100" required />
             </div>
-            <div class="form-group">
-                <input type="date" name="date" class="form-control datetimepicker-input" id="datetimepicker5" data-toggle="datetimepicker" data-target="#datetimepicker5" placeholder="Enter task date"/>
+            <!-- <div class="form-group">
+                <input type="date" name="date" class="form-control datetimepicker-input" id="datetimepicker5" data-toggle="datetimepicker" data-target="#datetimepicker5" placeholder="Enter task date and time"/>
                     <script type="text/javascript">
                         $(function () {
                             $('#datetimepicker5').datetimepicker({
@@ -83,14 +83,12 @@
                             });
                         });
                     </script>
-            </div>
+            </div> -->
             <div class="form-group">
-                <input type="text" name="time" class="form-control datetimepicker-input" id="datetimepicker4" data-toggle="datetimepicker" data-target="#datetimepicker4" placeholder="Enter task time"/>
+                <input type="text" name="date" class="form-control datetimepicker-input" id="datetimepicker4" data-toggle="datetimepicker" data-target="#datetimepicker4" placeholder="Enter task time"/>
                     <script type="text/javascript">
                         $(function () {
-                            $('#datetimepicker4').datetimepicker({
-                                format: 'LT'
-                            });
+                            $('#datetimepicker4').datetimepicker();
                         });
                     </script>
             </div>
