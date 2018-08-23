@@ -5,7 +5,7 @@ from django.contrib import messages
 # from django.utils.timezone import localtime, now
 from django.utils import timezone
 from ..user_app.views import sessionCheck
-# import datetime
+import datetime
 # import pytz
 from models import Task
 from forms import NewTask
@@ -19,14 +19,17 @@ def display_dash(req):
         messages.warning(req, 'Please login to access tasks.')
         return redirect('/')
     today = timezone.now()
+    print "Today: {}".format(today)
+    curr = timezone.localtime(today).day
+    print "Localized day: {}".format(curr)
     context = {
         # 'today': datetime.date.today(),
         'today': timezone.localtime(today).date,
-        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=timezone.now()).order_by('date'),
-        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=timezone.now()).order_by('date'),
+        'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__year=timezone.localtime(timezone.now()).year).filter(date__month=timezone.localtime(timezone.now()).month).filter(date__day=timezone.localtime(timezone.now()).day).order_by('date'),
+        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=timezone.localtime(timezone.now())).filter(date__day__gt=timezone.localtime(timezone.now()).day).order_by('date'),
         # 'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=localtime(now())).order_by('time'),
         # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=localtime(now())).order_by('date', 'time'),
-        'addForm': NewTask()
+        # 'addForm': NewTask()
     }
     # logged = req.session['auth_id']
     # later = Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today())
