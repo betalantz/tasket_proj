@@ -56,9 +56,9 @@ def make_utc(dt):
 
 class Task(models.Model):
     TASK_STATUS = (
-        ('P', 'Pending'),
-        ('D', 'Done'),
-        ('M', 'Missed'),
+        ('H', 'High'),
+        ('M', 'Medium'),
+        ('L', 'Low'),
     )
     task = models.TextField()
     user = models.ForeignKey(User, related_name='tasks')

@@ -6,9 +6,10 @@ from django.contrib import messages
 from django.utils import timezone
 from ..user_app.views import sessionCheck
 import datetime
-# import pytz
+from dateutil.parser import parse
+import pytz
 from models import Task
-from forms import NewTask
+# from forms import NewTask
 
 # def test(req):
 #     res='Welcome to user_app views'
@@ -26,7 +27,9 @@ def display_dash(req):
         # 'today': datetime.date.today(),
         'today': timezone.localtime(today).date,
         'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__year=timezone.localtime(timezone.now()).year).filter(date__month=timezone.localtime(timezone.now()).month).filter(date__day=timezone.localtime(timezone.now()).day).order_by('date'),
-        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=timezone.localtime(timezone.now())).filter(date__day__gt=timezone.localtime(timezone.now()).day).order_by('date'),
+        # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gte=timezone.localtime(timezone.now())).filter(date__day__gt=timezone.localtime(timezone.now()).day).order_by('date'),
+        # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__year__gte=timezone.localtime(timezone.now()).year).filter(date__month__gte=timezone.localtime(timezone.now()).month).filter(date__day__gt=timezone.localtime(timezone.now()).day).order_by('date'),
+        'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=timezone.localtime(timezone.now())).exclude(date__day=timezone.localtime(timezone.now()).day).order_by('date'),
         # 'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=localtime(now())).order_by('time'),
         # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=localtime(now())).order_by('date', 'time'),
         # 'addForm': NewTask()
@@ -55,9 +58,11 @@ def updateTask(req, task_id):
     if req.POST['status']:
         update.status = req.POST['status']
     if req.POST['date']:
-        update.date = req.POST['date']
-    if req.POST['time']:
-        update.time = req.POST['time']
+        dt_obj = parse(req.POST['date'])
+        aware_obj = make_utc(dt_obj)
+        update.date = aware_obj
+    # if req.POST['time']:
+    #     update.time = req.POST['time']
     update.save()
     return redirect('/task/')
 
@@ -80,3 +85,8 @@ def search_tasks(req):
         search_text = req.POST['search_text']
     else: 
         search_text = ''
+
+def make_utc(dt):
+    if timezone.is_naive(dt):
+        dt = timezone.make_aware(dt)
+    return dt.astimezone(pytz.utc)
