@@ -27,7 +27,7 @@ def process_reg(req):
                 messages.error(req, 'We already have an entry with that email, with name of {}'.format(email_matches[0].name))
                 return redirect('/')
             # Check that passwords match
-            if not form.data['password'] == form.data['conf_pass']:
+            if not form.cleaned_data['password'] == form.cleaned_data['conf_pass']:
                 messages.error(req, 'Passwords did not match, please re-enter.')
                 return redirect('/')
             # Create and save new user
