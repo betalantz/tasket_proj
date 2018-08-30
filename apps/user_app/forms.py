@@ -36,15 +36,16 @@ class RegForm(forms.Form):
         label='Time Zone',
         help_text='Please choose your time zone'
     )
-    def clean(self):
-        cleaned_data = super(RegForm, self).clean()
-        password = cleaned_data.get("password")
-        conf_pass = cleaned_data.get("conf_pass")
-        if password and conf_pass:
-            if not password == conf_pass:
-                msg = "Passwords must match."
-                self.add_error('password', msg)
-                self.add_error('conf_pass', msg)
+    # def clean(self):
+    #     cleaned_data = super(RegForm, self).clean()
+    #     password = cleaned_data.get("password")
+    #     conf_pass = cleaned_data.get("conf_pass")
+    #     if password and conf_pass:
+    #         if not password == conf_pass:
+    #             msg = "Passwords must match."
+    #             self.add_error('password', msg)
+    #             self.add_error('conf_pass', msg)
+    #     return cleaned_data
 
 class LogForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(
