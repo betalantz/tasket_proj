@@ -22,7 +22,6 @@ class TimezoneMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if sessionCheck(request):
             currTZ = User.objects.get(id=request.session['auth_id']).timezone
-            print currTZ
             timezone.activate(pytz.timezone(currTZ))
         else:
             timezone.deactivate()

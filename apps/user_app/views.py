@@ -8,13 +8,6 @@ from .forms import RegForm, LogForm
 from models import User
 import bcrypt
 
-# def test(req):
-#     res='Welcome to user_app views'
-#     return HttpResponse(res)
-# def display_login(req):
-#     form = RegForm()
-#     return render(req, 'user_app/login.html', {'form': form})
-
 def process_reg(req):
     print "Hit process_reg()"
     # if this is a POST request we need to process the form data

@@ -28,26 +28,6 @@
                     });
                 });</script>
         </div>
-        <!-- <div class="form-group">
-            <input type="date" name="date" class="form-control datetimepicker-input" id="datetimepicker5" data-toggle="datetimepicker" data-target="#datetimepicker5" placeholder="{{task.date}}"/>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#datetimepicker5').datetimepicker({
-                            minDate: 'now'
-                        });
-                    });
-                </script>
-        </div>
-        <div class="form-group">
-            <input type="date" name="time" class="form-control datetimepicker-input" id="datetimepicker4" data-toggle="datetimepicker" data-target="#datetimepicker4" placeholder="{{task.time}}"/>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#datetimepicker4').datetimepicker({
-                            format: 'LT'
-                        });
-                    });
-                </script>
-        </div> -->
         <div class="form-group">
             <select class="form-control" name="status">
                 <option value="H" {% if task.status == 'P' %} selected {% endif %}>High</option>
@@ -57,6 +37,7 @@
                 <small class="form-text text-muted">Select task priority</small>
         </div>   
         <button type="submit" class="btn btn-primary">Update task</button>
+        <a class="btn btn-secondary" href="{% url 'dash' %}">Cancel</a>
     </form>
     {% if messages %}
         {% for message in messages %}

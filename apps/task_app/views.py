@@ -2,43 +2,25 @@
 from __future__ import unicode_literals
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
-# from django.utils.timezone import localtime, now
 from django.utils import timezone
 from ..user_app.views import sessionCheck
 import datetime
 from dateutil.parser import parse
 import pytz
 from models import Task
-# from forms import NewTask
 
-# def test(req):
-#     res='Welcome to user_app views'
-#     return render(req, 'task_app/dash.html')
 
 def display_dash(req):
     if sessionCheck(req) == False:
         messages.warning(req, 'Please login to access tasks.')
         return redirect('/')
     today = timezone.now()
-    print "Today: {}".format(today)
-    curr = timezone.localtime(today).day
-    print "Localized day: {}".format(curr)
     context = {
-        # 'today': datetime.date.today(),
         'today': timezone.localtime(today).date,
         'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__year=timezone.localtime(timezone.now()).year).filter(date__month=timezone.localtime(timezone.now()).month).filter(date__day=timezone.localtime(timezone.now()).day).order_by('date'),
-        # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gte=timezone.localtime(timezone.now())).filter(date__day__gt=timezone.localtime(timezone.now()).day).order_by('date'),
-        # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__year__gte=timezone.localtime(timezone.now()).year).filter(date__month__gte=timezone.localtime(timezone.now()).month).filter(date__day__gt=timezone.localtime(timezone.now()).day).order_by('date'),
         'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=timezone.localtime(timezone.now())).exclude(date__day=timezone.localtime(timezone.now()).day).order_by('date'),
-        # 'curr_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date=localtime(now())).order_by('time'),
-        # 'future_tasks': Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=localtime(now())).order_by('date', 'time'),
         # 'addForm': NewTask()
     }
-    # logged = req.session['auth_id']
-    # later = Task.objects.filter(user_id=req.session['auth_id']).filter(date__gt=datetime.date.today())
-    # print "filter returns:"
-    # print later
-    # print logged
     return render(req, 'task_app/dash.html', context)
 
 def editTask(req, task_id):
@@ -61,8 +43,6 @@ def updateTask(req, task_id):
         dt_obj = parse(req.POST['date'])
         aware_obj = make_utc(dt_obj)
         update.date = aware_obj
-    # if req.POST['time']:
-    #     update.time = req.POST['time']
     update.save()
     return redirect('/task/')
 
