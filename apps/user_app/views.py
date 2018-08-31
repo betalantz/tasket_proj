@@ -45,8 +45,6 @@ def process_reg(req):
         print "form failed validation"
     # if a GET (or other method) create a blank form
     else:
-        # form = RegForm()
-        # log_form = LogForm()
         context = {
             'form': RegForm(),
             'log_form': LogForm()
@@ -87,8 +85,6 @@ def process_log(req):
                 return redirect('/process_log')
 
     else:
-    # form = RegForm()
-    # log_form = LogForm()
         context = {
             'form': RegForm(),
             'log_form': LogForm()
